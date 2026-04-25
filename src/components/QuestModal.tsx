@@ -6,6 +6,7 @@ import type { Difficulty, QuestType, QuestCategory } from '../lib/types'
 
 interface Props {
   onClose: () => void
+  quest?: import('../lib/types').Quest
 }
 
 const DIFFICULTIES: Difficulty[] = ['E', 'D', 'C', 'B', 'A']
@@ -16,13 +17,14 @@ const DIFF_COLORS: Record<string, string> = {
   E: '#9ca3af', D: '#4ade80', C: '#38bdf8', B: '#c084fc', A: '#f87171',
 }
 
-export default function QuestModal({ onClose }: Props) {
-  const { addQuest } = useGameStore()
-  const [title, setTitle] = useState('')
-  const [difficulty, setDifficulty] = useState<Difficulty>('D')
-  const [type, setType] = useState<QuestType>('daily')
-  const [category, setCategory] = useState<QuestCategory>('Physical')
-  const [dueDate, setDueDate] = useState('')
+export default function QuestModal({ onClose, quest }: Props) {
+  const { addQuest, editQuest } = useGameStore()
+  const isEditing = !!quest
+  const [title, setTitle] = useState(quest?.title ?? '')
+  const [difficulty, setDifficulty] = useState<Difficulty>(quest?.difficulty ?? 'D')
+  const [type, setType] = useState<QuestType>(quest?.type ?? 'daily')
+  const [category, setCategory] = useState<QuestCategory>(quest?.category ?? 'Physical')
+  const [dueDate, setDueDate] = useState(quest?.dueDate ?? '')
 
   const xpPreview = getXPReward(difficulty, type)
   const isRecurring = type === 'daily'
@@ -30,15 +32,27 @@ export default function QuestModal({ onClose }: Props) {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!title.trim()) return
-    addQuest({
-      title: title.trim(),
-      difficulty,
-      type,
-      category,
-      recurring: isRecurring,
-      xpReward: xpPreview,
-      dueDate: dueDate || undefined,
-    })
+    if (isEditing) {
+      editQuest(quest.id, {
+        title: title.trim(),
+        difficulty,
+        type,
+        category,
+        recurring: isRecurring,
+        xpReward: xpPreview,
+        dueDate: dueDate || undefined,
+      })
+    } else {
+      addQuest({
+        title: title.trim(),
+        difficulty,
+        type,
+        category,
+        recurring: isRecurring,
+        xpReward: xpPreview,
+        dueDate: dueDate || undefined,
+      })
+    }
     onClose()
   }
 
@@ -56,8 +70,9 @@ export default function QuestModal({ onClose }: Props) {
       <motion.div
         style={{
           position: 'fixed', inset: 0, zIndex: 50,
-          display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
           background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(6px)',
+          padding: '0 16px',
         }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -67,15 +82,15 @@ export default function QuestModal({ onClose }: Props) {
         <motion.div
           className="sl-panel sl-modal-sheet"
           style={{ width: '100%', maxWidth: 440, marginBottom: 0 }}
-          initial={{ y: 60, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 60, opacity: 0 }}
-          transition={{ type: 'spring', damping: 20 }}
+          initial={{ scale: 0.92, opacity: 0, y: 16 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          exit={{ scale: 0.92, opacity: 0, y: 16 }}
+          transition={{ type: 'spring', damping: 22, stiffness: 200 }}
         >
           <div className="sl-corner tl" /><div className="sl-corner tr" />
           <div className="sl-corner bl" /><div className="sl-corner br" />
           <div className="sl-panel-header">
-            <span className="sl-panel-title">Register New Quest</span>
+            <span className="sl-panel-title">{isEditing ? 'Edit Quest' : 'Register New Quest'}</span>
             <button
               onClick={onClose}
               style={{ marginLeft: 'auto', background: 'none', border: 'none', color: '#4a7a9b', cursor: 'pointer', fontSize: 18, lineHeight: 1 }}
@@ -192,7 +207,7 @@ export default function QuestModal({ onClose }: Props) {
               className="sl-btn sl-btn-primary"
               style={{ width: '100%', fontSize: 11, letterSpacing: 3, padding: '11px 0', opacity: title.trim() ? 1 : 0.4 }}
             >
-              Confirm Quest
+              {isEditing ? 'Save Changes' : 'Confirm Quest'}
             </button>
           </form>
         </motion.div>

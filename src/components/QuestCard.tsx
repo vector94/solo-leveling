@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
 import type { Quest } from '../lib/types'
+import QuestModal from './QuestModal'
 
 const DIFF_COLORS: Record<string, string> = {
   E: '#9ca3af',
@@ -29,6 +30,7 @@ interface Props {
 export default function QuestCard({ quest, index = 0 }: Props) {
   const { completeQuest, failQuest, deleteQuest } = useGameStore()
   const [burst, setBurst] = useState(false)
+  const [editing, setEditing] = useState(false)
   const color = quest.type === 'boss' ? BOSS_COLOR : (DIFF_COLORS[quest.difficulty] ?? '#9ca3af')
   const isDone = quest.status === 'completed'
   const isFailed = quest.status === 'failed'
@@ -170,6 +172,28 @@ export default function QuestCard({ quest, index = 0 }: Props) {
         +{quest.xpReward}
       </div>
 
+      {/* Edit button (active only) */}
+      {quest.status === 'active' && (
+        <button
+          onClick={() => setEditing(true)}
+          style={{
+            background: 'none',
+            border: 'none',
+            color: 'rgba(74,158,221,0.3)',
+            cursor: 'pointer',
+            fontSize: 13,
+            padding: '2px 4px',
+            transition: 'color 0.2s',
+            flexShrink: 0,
+          }}
+          onMouseEnter={e => (e.currentTarget.style.color = 'rgba(74,158,221,0.9)')}
+          onMouseLeave={e => (e.currentTarget.style.color = 'rgba(74,158,221,0.3)')}
+          title="Edit quest"
+        >
+          ✎
+        </button>
+      )}
+
       {/* Fail button (active only) */}
       {quest.status === 'active' && (
         <button
@@ -211,6 +235,8 @@ export default function QuestCard({ quest, index = 0 }: Props) {
       >
         ×
       </button>
+
+      {editing && <QuestModal quest={quest} onClose={() => setEditing(false)} />}
     </motion.div>
   )
 }
