@@ -4,10 +4,11 @@ import { useGameStore } from '../store/gameStore'
 import { RANK_COLORS } from './RankBadge'
 
 const NAV = [
-  { to: '/',             label: 'Dashboard',     icon: '◈' },
-  { to: '/quests',       label: 'Quests',         icon: '⚔' },
-  { to: '/profile',      label: 'Profile',        icon: '◉' },
-  { to: '/achievements', label: 'Achievements',   icon: '◆' },
+  { to: '/',             label: 'Dashboard',    icon: '◈' },
+  { to: '/quests',       label: 'Quests',       icon: '⚔' },
+  { to: '/profile',      label: 'Profile',      icon: '◉' },
+  { to: '/achievements', label: 'Achievements', icon: '◆' },
+  { to: '/shadows',      label: 'Shadows',      icon: '👻' },
 ]
 
 export default function Sidebar() {

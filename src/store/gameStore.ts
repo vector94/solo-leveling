@@ -4,8 +4,14 @@ import type { Quest, Achievement, Stats, ResetNotification } from '../lib/types'
 import { xpForLevel, getRankForLevel, XP_PENALTY_RATIO } from '../lib/xp'
 import { getInitialAchievements, checkNewAchievements } from '../lib/achievements'
 
+export interface SystemNotif {
+  id: string
+  title: string
+  subtitle: string
+  xp?: number
+}
+
 interface GameState {
-  // Player
   playerName: string
   level: number
   currentXP: number
@@ -17,25 +23,24 @@ interface GameState {
   lastActiveDate: string
   lastResetDate: string
 
-  // UI queues
   levelUpQueue: number[]
+  rankUpQueue: string[]
   pendingAchievements: string[]
   resetNotification: ResetNotification | null
+  systemNotifications: SystemNotif[]
 
-  // Quests
   quests: Quest[]
-
-  // Achievements
   achievements: Achievement[]
 
-  // Actions
   setPlayerName: (name: string) => void
   gainXP: (amount: number) => void
   loseXP: (amount: number) => void
   allocateStat: (stat: keyof Stats) => void
   dismissLevelUp: () => void
+  dismissRankUp: () => void
   dismissAchievement: () => void
   dismissResetNotification: () => void
+  dismissSystemNotif: () => void
 
   addQuest: (quest: Omit<Quest, 'id' | 'status'>) => void
   editQuest: (id: string, updates: Partial<Omit<Quest, 'id'>>) => void
@@ -64,8 +69,10 @@ export const useGameStore = create<GameState>()(
       lastActiveDate: '',
       lastResetDate: new Date().toDateString(),
       levelUpQueue: [],
+      rankUpQueue: [],
       pendingAchievements: [],
       resetNotification: null,
+      systemNotifications: [],
       quests: [],
       achievements: getInitialAchievements(),
 
@@ -73,6 +80,7 @@ export const useGameStore = create<GameState>()(
 
       gainXP: (amount) => {
         set((state) => {
+          const oldRank = getRankForLevel(state.level)
           let currentXP = state.currentXP + amount
           let level = state.level
           let unallocatedPoints = state.unallocatedPoints
@@ -87,20 +95,16 @@ export const useGameStore = create<GameState>()(
             threshold = xpForLevel(level)
           }
 
-          return {
-            currentXP,
-            totalXP: state.totalXP + amount,
-            level,
-            unallocatedPoints,
-            levelUpQueue,
-          }
+          const newRank = getRankForLevel(level)
+          const rankUpQueue = [...state.rankUpQueue]
+          if (newRank !== oldRank) rankUpQueue.push(newRank)
+
+          return { currentXP, totalXP: state.totalXP + amount, level, unallocatedPoints, levelUpQueue, rankUpQueue }
         })
       },
 
       loseXP: (amount) => {
-        set((state) => ({
-          currentXP: Math.max(0, state.currentXP - amount),
-        }))
+        set((state) => ({ currentXP: Math.max(0, state.currentXP - amount) }))
       },
 
       allocateStat: (stat) => {
@@ -113,29 +117,19 @@ export const useGameStore = create<GameState>()(
         })
       },
 
-      dismissLevelUp: () => {
-        set((state) => ({ levelUpQueue: state.levelUpQueue.slice(1) }))
-      },
-
-      dismissAchievement: () => {
-        set((state) => ({ pendingAchievements: state.pendingAchievements.slice(1) }))
-      },
-
+      dismissLevelUp: () => set((s) => ({ levelUpQueue: s.levelUpQueue.slice(1) })),
+      dismissRankUp: () => set((s) => ({ rankUpQueue: s.rankUpQueue.slice(1) })),
+      dismissAchievement: () => set((s) => ({ pendingAchievements: s.pendingAchievements.slice(1) })),
       dismissResetNotification: () => set({ resetNotification: null }),
+      dismissSystemNotif: () => set((s) => ({ systemNotifications: s.systemNotifications.slice(1) })),
 
       addQuest: (questData) => {
-        const quest: Quest = {
-          ...questData,
-          id: crypto.randomUUID(),
-          status: 'active',
-        }
+        const quest: Quest = { ...questData, id: crypto.randomUUID(), status: 'active' }
         set((state) => ({ quests: [...state.quests, quest] }))
       },
 
       editQuest: (id, updates) => {
-        set((state) => ({
-          quests: state.quests.map((q) => (q.id === id ? { ...q, ...updates } : q)),
-        }))
+        set((state) => ({ quests: state.quests.map((q) => (q.id === id ? { ...q, ...updates } : q)) }))
       },
 
       deleteQuest: (id) => {
@@ -146,13 +140,19 @@ export const useGameStore = create<GameState>()(
         const quest = get().quests.find((q) => q.id === id)
         if (!quest || quest.status === 'completed') return
 
+        const notif: SystemNotif = {
+          id: crypto.randomUUID(),
+          title: quest.type === 'boss' ? 'BOSS CLEARED' : 'QUEST COMPLETE',
+          subtitle: quest.title,
+          xp: quest.xpReward,
+        }
+
         set((state) => ({
           quests: state.quests.map((q) =>
-            q.id === id
-              ? { ...q, status: 'completed', completedAt: new Date().toISOString() }
-              : q
+            q.id === id ? { ...q, status: 'completed', completedAt: new Date().toISOString() } : q
           ),
           totalQuestsCompleted: state.totalQuestsCompleted + 1,
+          systemNotifications: [...state.systemNotifications, notif],
         }))
 
         get().gainXP(quest.xpReward)
@@ -163,17 +163,12 @@ export const useGameStore = create<GameState>()(
       failQuest: (id) => {
         const quest = get().quests.find((q) => q.id === id)
         if (!quest || quest.status !== 'active') return
-
         const penalty = Math.floor(quest.xpReward * XP_PENALTY_RATIO)
-
         set((state) => ({
           quests: state.quests.map((q) =>
-            q.id === id
-              ? { ...q, status: 'failed', failedAt: new Date().toISOString() }
-              : q
+            q.id === id ? { ...q, status: 'failed', failedAt: new Date().toISOString() } : q
           ),
         }))
-
         get().loseXP(penalty)
       },
 
@@ -182,48 +177,31 @@ export const useGameStore = create<GameState>()(
         const state = get()
         if (state.lastResetDate === today) return
 
-        const failedQuests = state.quests.filter(
-          (q) => q.recurring && q.status === 'active'
-        )
-
-        const xpLost = failedQuests.reduce(
-          (sum, q) => sum + Math.floor(q.xpReward * XP_PENALTY_RATIO),
-          0
-        )
+        const failedQuests = state.quests.filter((q) => q.recurring && q.status === 'active')
+        const xpLost = failedQuests.reduce((sum, q) => sum + Math.floor(q.xpReward * XP_PENALTY_RATIO), 0)
 
         set((s) => ({
           quests: s.quests.map((q) =>
             q.recurring ? { ...q, status: 'active', completedAt: undefined, failedAt: undefined } : q
           ),
           lastResetDate: today,
-          resetNotification:
-            failedQuests.length > 0 ? { failedCount: failedQuests.length, xpLost } : null,
+          resetNotification: failedQuests.length > 0 ? { failedCount: failedQuests.length, xpLost } : null,
         }))
 
         if (xpLost > 0) get().loseXP(xpLost)
 
-        // Update streak — if they had no completed quests yesterday, streak breaks
-        const hadCompletedYesterday = state.quests.some(
-          (q) => q.status === 'completed' && q.recurring
-        )
-        if (!hadCompletedYesterday) {
-          set({ dailyStreak: 0 })
-        }
+        const hadCompletedYesterday = state.quests.some((q) => q.status === 'completed' && q.recurring)
+        if (!hadCompletedYesterday) set({ dailyStreak: 0 })
       },
 
       updateStreak: () => {
         const today = new Date().toDateString()
         set((state) => {
           if (state.lastActiveDate === today) return state
-
           const yesterday = new Date()
           yesterday.setDate(yesterday.getDate() - 1)
           const wasYesterday = state.lastActiveDate === yesterday.toDateString()
-
-          return {
-            dailyStreak: wasYesterday ? state.dailyStreak + 1 : 1,
-            lastActiveDate: today,
-          }
+          return { dailyStreak: wasYesterday ? state.dailyStreak + 1 : 1, lastActiveDate: today }
         })
       },
 
@@ -237,22 +215,16 @@ export const useGameStore = create<GameState>()(
           stats: state.stats,
           unallocatedPoints: state.unallocatedPoints,
         }
-
         const newIds = checkNewAchievements(state.achievements, snap)
         if (newIds.length === 0) return
-
         const now = new Date().toISOString()
         set((s) => ({
-          achievements: s.achievements.map((a) =>
-            newIds.includes(a.id) ? { ...a, unlockedAt: now } : a
-          ),
+          achievements: s.achievements.map((a) => (newIds.includes(a.id) ? { ...a, unlockedAt: now } : a)),
           pendingAchievements: [...s.pendingAchievements, ...newIds],
         }))
       },
     }),
-    {
-      name: 'solo-leveling-game',
-    }
+    { name: 'solo-leveling-game' }
   )
 )
 

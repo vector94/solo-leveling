@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
 import type { Quest } from '../lib/types'
 
@@ -27,10 +28,19 @@ interface Props {
 
 export default function QuestCard({ quest, index = 0 }: Props) {
   const { completeQuest, failQuest, deleteQuest } = useGameStore()
+  const [burst, setBurst] = useState(false)
   const color = quest.type === 'boss' ? BOSS_COLOR : (DIFF_COLORS[quest.difficulty] ?? '#9ca3af')
   const isDone = quest.status === 'completed'
   const isFailed = quest.status === 'failed'
   const isBoss = quest.type === 'boss'
+
+  function handleComplete() {
+    setBurst(true)
+    completeQuest(quest.id)
+    setTimeout(() => setBurst(false), 700)
+  }
+
+  const BURST_COUNT = isBoss ? 18 : 12
 
   return (
     <motion.div
@@ -40,7 +50,7 @@ export default function QuestCard({ quest, index = 0 }: Props) {
       exit={{ opacity: 0, x: 12 }}
       transition={{ duration: 0.25, delay: index * 0.04 }}
       className={`quest-item${isDone || isFailed ? ' done' : ''}`}
-      style={{ '--diff-color': color } as React.CSSProperties}
+      style={{ '--diff-color': color, overflow: 'visible' } as React.CSSProperties}
     >
       {/* Colored left strip */}
       <div
@@ -48,12 +58,41 @@ export default function QuestCard({ quest, index = 0 }: Props) {
         style={{ background: color, boxShadow: `0 0 8px ${color}` }}
       />
 
+      {/* Burst particles */}
+      <AnimatePresence>
+        {burst && (
+          <div style={{ position: 'absolute', top: '50%', left: 40, pointerEvents: 'none', zIndex: 10 }}>
+            {Array.from({ length: BURST_COUNT }, (_, i) => {
+              const angle = (i / BURST_COUNT) * Math.PI * 2
+              const dist = isBoss ? 55 : 38
+              return (
+                <motion.div
+                  key={i}
+                  style={{
+                    position: 'absolute',
+                    width: isBoss ? 5 : 4,
+                    height: isBoss ? 5 : 4,
+                    borderRadius: '50%',
+                    background: i % 3 === 0 ? '#fbbf24' : color,
+                    boxShadow: `0 0 6px ${i % 3 === 0 ? '#fbbf24' : color}`,
+                    marginLeft: -2, marginTop: -2,
+                  }}
+                  initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
+                  animate={{ x: Math.cos(angle) * dist, y: Math.sin(angle) * dist * 0.55, opacity: 0, scale: 0 }}
+                  transition={{ duration: 0.55, ease: 'easeOut' }}
+                />
+              )
+            })}
+          </div>
+        )}
+      </AnimatePresence>
+
       {/* Complete button */}
       {!isDone && !isFailed && (
         <button
           className="quest-complete-btn"
           style={{ borderColor: color, color }}
-          onClick={() => completeQuest(quest.id)}
+          onClick={handleComplete}
           title="Complete"
         >
           ✓

@@ -1,5 +1,5 @@
-import { useState, useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState } from 'react'
+import { AnimatePresence } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
 import PlayerCard from '../components/PlayerCard'
 import QuestCard from '../components/QuestCard'
@@ -9,37 +9,14 @@ import Panel from '../components/Panel'
 export default function Dashboard() {
   const { quests, dailyStreak, totalQuestsCompleted, performDailyReset } = useGameStore()
   const [showModal, setShowModal] = useState(false)
-  const [notif, setNotif] = useState<string | null>(null)
-  const notifRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const dailyQuests = quests.filter(q => q.type === 'daily')
   const bossQuests  = quests.filter(q => q.type === 'boss' && q.status === 'active')
   const active      = dailyQuests.filter(q => q.status === 'active')
   const completed   = dailyQuests.filter(q => q.status === 'completed')
 
-  function resetAndNotify() {
-    performDailyReset()
-    setNotif('Daily quests reset!')
-    if (notifRef.current) clearTimeout(notifRef.current)
-    notifRef.current = setTimeout(() => setNotif(null), 2500)
-  }
-
   return (
     <div className="sl-page" style={{ position: 'relative' }}>
-
-      {/* XP gain notification */}
-      <AnimatePresence>
-        {notif && (
-          <motion.div
-            className="sl-notif"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-          >
-            {notif}
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* Header */}
       <div style={{ textAlign: 'center', paddingBottom: 20, marginBottom: 4 }}>
@@ -78,7 +55,7 @@ export default function Dashboard() {
 
       {/* Actions */}
       <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginBottom: 12 }}>
-        <button className="sl-btn sl-btn-ghost" onClick={resetAndNotify}>↺ Reset Daily</button>
+        <button className="sl-btn sl-btn-ghost" onClick={performDailyReset}>↺ Reset Daily</button>
         <button className="sl-btn sl-btn-primary" onClick={() => setShowModal(true)}>+ New Quest</button>
       </div>
 

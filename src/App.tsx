@@ -5,10 +5,14 @@ import BottomNav from './components/BottomNav'
 import LevelUpModal from './components/LevelUpModal'
 import AchievementToast from './components/AchievementToast'
 import ResetNotification from './components/ResetNotification'
+import ParticleBackground from './components/ParticleBackground'
+import SystemNotification from './components/SystemNotification'
+import RankUpModal from './components/RankUpModal'
 import Dashboard from './pages/Dashboard'
 import Quests from './pages/Quests'
 import Profile from './pages/Profile'
 import Achievements from './pages/Achievements'
+import Shadows from './pages/Shadows'
 import { useGameStore } from './store/gameStore'
 
 function useMidnightReset() {
@@ -34,21 +38,27 @@ function AppInner() {
   useMidnightReset()
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh' }}>
-      <Sidebar />
-      <main style={{ flex: 1, minWidth: 0, overflowX: 'hidden' }}>
-        <Routes>
-          <Route path="/"             element={<Dashboard />} />
-          <Route path="/quests"       element={<Quests />} />
-          <Route path="/profile"      element={<Profile />} />
-          <Route path="/achievements" element={<Achievements />} />
-        </Routes>
-      </main>
-      <BottomNav />
-      <LevelUpModal />
-      <AchievementToast />
-      <ResetNotification />
-    </div>
+    <>
+      <ParticleBackground />
+      <div style={{ display: 'flex', minHeight: '100vh' }}>
+        <Sidebar />
+        <main style={{ flex: 1, minWidth: 0, overflowX: 'hidden' }}>
+          <Routes>
+            <Route path="/"             element={<Dashboard />} />
+            <Route path="/quests"       element={<Quests />} />
+            <Route path="/profile"      element={<Profile />} />
+            <Route path="/achievements" element={<Achievements />} />
+            <Route path="/shadows"      element={<Shadows />} />
+          </Routes>
+        </main>
+        <BottomNav />
+        <LevelUpModal />
+        <RankUpModal />
+        <AchievementToast />
+        <ResetNotification />
+        <SystemNotification />
+      </div>
+    </>
   )
 }
 

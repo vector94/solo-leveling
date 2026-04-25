@@ -449,6 +449,12 @@ body::before {
   100% { transform: translateY(100vh); }
 }
 
+@keyframes particleFloat {
+  0%   { transform: translateY(0) scale(1); opacity: var(--p-opacity, 0.4); }
+  50%  { opacity: calc(var(--p-opacity, 0.4) * 1.6); }
+  100% { transform: translateY(-100vh) scale(0.5); opacity: 0; }
+}
+
 .rank-s-glow { box-shadow: 0 0 22px rgba(251,191,36,0.55), 0 0 40px rgba(251,191,36,0.2); }
 .rank-a-glow { box-shadow: 0 0 18px rgba(248,113,113,0.4); }
 .rank-b-glow { box-shadow: 0 0 16px rgba(192,132,252,0.35); }
