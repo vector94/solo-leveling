@@ -19,11 +19,10 @@ export default function SystemNotification() {
       {notif && (
         <motion.div
           key={notif.id}
+          className="sl-system-notif"
           style={{
             position: 'fixed',
             top: 0,
-            left: '50%',
-            transform: 'translateX(-50%)',
             zIndex: 250,
             minWidth: 280,
             maxWidth: 400,

@@ -12,7 +12,8 @@ body {
     radial-gradient(ellipse at 20% 20%, rgba(0,60,130,0.18) 0%, transparent 55%),
     radial-gradient(ellipse at 80% 80%, rgba(60,0,120,0.12) 0%, transparent 55%);
   font-family: 'Rajdhani', sans-serif;
-  color: #c8d6e5;
+  font-weight: 500;
+  color: #d4e4f4;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -35,10 +36,10 @@ body::before {
 #root { position: relative; z-index: 1; }
 
 /* ── Scrollbar ────────────────────────────── */
-* { scrollbar-width: thin; scrollbar-color: #1e3a5a transparent; }
+* { scrollbar-width: thin; scrollbar-color: #2a5070 transparent; }
 *::-webkit-scrollbar { width: 4px; }
 *::-webkit-scrollbar-track { background: transparent; }
-*::-webkit-scrollbar-thumb { background: #1e3a5a; border-radius: 4px; }
+*::-webkit-scrollbar-thumb { background: #2a5070; border-radius: 4px; }
 
 /* ── Panel ────────────────────────────────── */
 .sl-panel {
@@ -263,7 +264,7 @@ body::before {
 }
 
 .sl-input:focus { border-color: rgba(74,158,221,0.7); }
-.sl-input::placeholder { color: #1e3a5a; }
+.sl-input::placeholder { color: #2a5070; }
 
 /* ── Notification ─────────────────────────── */
 .sl-notif {
@@ -400,7 +401,7 @@ body::before {
   font-size: 10px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: #2a5a7a;
+  color: #4a8aaa;
   border: 1px solid transparent;
   transition: all 0.2s;
   text-decoration: none;
@@ -494,7 +495,7 @@ body::before {
   justify-content: center;
   gap: 3px;
   text-decoration: none;
-  color: #2a5a7a;
+  color: #4a8aaa;
   transition: color 0.2s;
   padding: 8px 0;
   border-top: 2px solid transparent;
@@ -509,9 +510,16 @@ body::before {
 .sl-bottom-nav-label { font-size: 8px; letter-spacing: 1.5px; text-transform: uppercase; }
 
 /* ── Responsive: mobile ───────────────────── */
+/* Notification centered over main content (offset by sidebar width) */
+.sl-system-notif {
+  left: calc(50% + 110px);
+  transform: translateX(-50%);
+}
+
 @media (max-width: 767px) {
   .sl-sidebar { display: none; }
   .sl-bottom-nav { display: flex; }
+  .sl-system-notif { left: 50%; transform: translateX(-50%); }
 
   .sl-page {
     padding: 14px 12px 80px;
@@ -578,4 +586,5 @@ body::before {
 @media (min-width: 768px) and (max-width: 1024px) {
   .sl-sidebar { width: 180px; }
   .sl-nav-link { font-size: 9px; letter-spacing: 1.5px; padding: 10px 10px; }
+  .sl-system-notif { left: calc(50% + 90px); }
 }

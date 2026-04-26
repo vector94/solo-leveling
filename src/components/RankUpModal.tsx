@@ -55,7 +55,7 @@ export default function RankUpModal() {
         >
           <motion.div
             className="cinzel"
-            style={{ fontSize: 11, letterSpacing: 6, color: '#4a7a9b', marginBottom: 12 }}
+            style={{ fontSize: 11, letterSpacing: 6, color: '#6a9abb', marginBottom: 12 }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
@@ -93,7 +93,7 @@ export default function RankUpModal() {
 
           <motion.div
             className="cinzel"
-            style={{ fontSize: 10, letterSpacing: 3, color: '#2a5a7a', marginBottom: 32 }}
+            style={{ fontSize: 10, letterSpacing: 3, color: '#4a8aaa', marginBottom: 32 }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.65 }}

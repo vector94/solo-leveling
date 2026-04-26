@@ -124,7 +124,7 @@ export default function Profile() {
                     {r}
                   </div>
                 </div>
-                <div style={{ fontSize: 9, color: '#1e3a5a', marginTop: 4, fontFamily: 'Cinzel, serif' }}>
+                <div style={{ fontSize: 9, color: '#3a6080', marginTop: 4, fontFamily: 'Cinzel, serif' }}>
                   Lv.{RANK_MIN_LEVELS[i]}
                 </div>
               </div>

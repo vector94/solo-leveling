@@ -30,7 +30,7 @@ export default function AchievementToast() {
               <div className="cinzel" style={{ fontSize: 13, fontWeight: 700, color: '#e0eeff' }}>
                 {achievement.title}
               </div>
-              <div style={{ fontSize: 11, color: '#4a7a9b', marginTop: 2 }}>
+              <div style={{ fontSize: 11, color: '#6a9abb', marginTop: 2 }}>
                 {achievement.description}
               </div>
             </div>

@@ -60,7 +60,7 @@ export default function Quests() {
       {/* Quest list */}
       <Panel title={`${filter === 'all' ? 'All' : filter.charAt(0).toUpperCase() + filter.slice(1)} Quests (${filtered.length})`}>
         {filtered.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '30px 0', fontFamily: 'Cinzel, serif', fontSize: 12, letterSpacing: 1, color: '#1e3a5a' }}>
+          <div style={{ textAlign: 'center', padding: '30px 0', fontFamily: 'Cinzel, serif', fontSize: 12, letterSpacing: 1, color: '#3a6080' }}>
             No quests registered.
           </div>
         ) : (

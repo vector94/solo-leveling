@@ -39,7 +39,7 @@ export default function ResetNotification() {
               Daily Reset
             </div>
 
-            <div style={{ fontSize: 13, color: '#4a7a9b', marginBottom: 14, lineHeight: 1.6 }}>
+            <div style={{ fontSize: 13, color: '#6a9abb', marginBottom: 14, lineHeight: 1.6 }}>
               You failed{' '}
               <span style={{ color: '#f87171', fontWeight: 600 }}>{resetNotification.failedCount}</span>{' '}
               {resetNotification.failedCount === 1 ? 'quest' : 'quests'} yesterday.

@@ -200,19 +200,22 @@ export default function QuestCard({ quest, index = 0 }: Props) {
           onClick={() => failQuest(quest.id)}
           style={{
             background: 'none',
-            border: 'none',
-            color: 'rgba(248,113,113,0.3)',
+            border: '1px solid rgba(248,113,113,0.2)',
+            borderRadius: 2,
+            color: 'rgba(248,113,113,0.4)',
             cursor: 'pointer',
-            fontSize: 13,
-            padding: '2px 4px',
-            transition: 'color 0.2s',
+            fontSize: 9,
+            padding: '2px 5px',
+            letterSpacing: 1,
+            fontFamily: 'Cinzel, serif',
+            transition: 'all 0.2s',
             flexShrink: 0,
           }}
-          onMouseEnter={e => (e.currentTarget.style.color = 'rgba(248,113,113,0.9)')}
-          onMouseLeave={e => (e.currentTarget.style.color = 'rgba(248,113,113,0.3)')}
+          onMouseEnter={e => { e.currentTarget.style.color = 'rgba(248,113,113,1)'; e.currentTarget.style.borderColor = 'rgba(248,113,113,0.7)' }}
+          onMouseLeave={e => { e.currentTarget.style.color = 'rgba(248,113,113,0.4)'; e.currentTarget.style.borderColor = 'rgba(248,113,113,0.2)' }}
           title="Fail quest"
         >
-          ✕
+          FAIL
         </button>
       )}
 

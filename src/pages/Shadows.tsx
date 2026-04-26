@@ -26,7 +26,7 @@ export default function Shadows() {
 
       {/* Progress */}
       <div style={{ marginBottom: 14 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'Cinzel, serif', fontSize: 10, letterSpacing: 2, color: '#4a7a9b', marginBottom: 6 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'Cinzel, serif', fontSize: 10, letterSpacing: 2, color: '#6a9abb', marginBottom: 6 }}>
           <span>Soldiers Risen</span>
           <span style={{ color: '#4a9edd' }}>{unlocked.length} / {SHADOWS.length}</span>
         </div>
@@ -74,17 +74,17 @@ export default function Shadows() {
                         >
                           {shadow.grade}
                         </span>
-                        <span style={{ fontSize: 10, color: '#2a5a7a', letterSpacing: 1, textTransform: 'uppercase', fontFamily: 'Cinzel, serif' }}>
+                        <span style={{ fontSize: 10, color: '#4a8aaa', letterSpacing: 1, textTransform: 'uppercase', fontFamily: 'Cinzel, serif' }}>
                           {shadow.type}
                         </span>
                       </div>
-                      <div style={{ fontSize: 11, color: '#4a7a9b', lineHeight: 1.5 }}>
+                      <div style={{ fontSize: 11, color: '#6a9abb', lineHeight: 1.5 }}>
                         {shadow.description}
                       </div>
                     </div>
                     <div style={{ textAlign: 'center', flexShrink: 0 }}>
-                      <div className="cinzel" style={{ fontSize: 8, letterSpacing: 1, color: '#1e3a5a', marginBottom: 2 }}>UNLOCKED</div>
-                      <div className="cinzel" style={{ fontSize: 10, color: '#2a5a7a' }}>Lv.{shadow.levelRequired}</div>
+                      <div className="cinzel" style={{ fontSize: 8, letterSpacing: 1, color: '#3a6080', marginBottom: 2 }}>UNLOCKED</div>
+                      <div className="cinzel" style={{ fontSize: 10, color: '#4a8aaa' }}>Lv.{shadow.levelRequired}</div>
                     </div>
                   </motion.div>
                 )
@@ -124,11 +124,11 @@ export default function Shadows() {
                         {shadow.grade}
                       </span>
                     </div>
-                    <div style={{ fontSize: 11, color: '#1e3a5a' }}>{shadow.description}</div>
+                    <div style={{ fontSize: 11, color: '#3a6080' }}>{shadow.description}</div>
                   </div>
                   <div style={{ textAlign: 'center', flexShrink: 0 }}>
                     <div style={{ fontSize: 18, marginBottom: 2 }}>🔒</div>
-                    <div className="cinzel" style={{ fontSize: 10, color: '#1e3a5a' }}>Lv.{shadow.levelRequired}</div>
+                    <div className="cinzel" style={{ fontSize: 10, color: '#3a6080' }}>Lv.{shadow.levelRequired}</div>
                   </div>
                 </div>
               )
@@ -138,7 +138,7 @@ export default function Shadows() {
       )}
 
       {unlocked.length === 0 && (
-        <div style={{ textAlign: 'center', padding: '40px 0', fontFamily: 'Cinzel, serif', fontSize: 12, letterSpacing: 2, color: '#1e3a5a', lineHeight: 2 }}>
+        <div style={{ textAlign: 'center', padding: '40px 0', fontFamily: 'Cinzel, serif', fontSize: 12, letterSpacing: 2, color: '#3a6080', lineHeight: 2 }}>
           No shadows have risen yet.<br />
           Reach Level 5 to summon your first soldier.
         </div>

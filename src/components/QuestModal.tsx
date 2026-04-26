@@ -93,7 +93,7 @@ export default function QuestModal({ onClose, quest }: Props) {
             <span className="sl-panel-title">{isEditing ? 'Edit Quest' : 'Register New Quest'}</span>
             <button
               onClick={onClose}
-              style={{ marginLeft: 'auto', background: 'none', border: 'none', color: '#4a7a9b', cursor: 'pointer', fontSize: 18, lineHeight: 1 }}
+              style={{ marginLeft: 'auto', background: 'none', border: 'none', color: '#6a9abb', cursor: 'pointer', fontSize: 18, lineHeight: 1 }}
             >
               ×
             </button>
@@ -144,7 +144,7 @@ export default function QuestModal({ onClose, quest }: Props) {
                     style={{
                       flex: 1,
                       borderColor: difficulty === d ? DIFF_COLORS[d] : 'rgba(30,110,181,0.22)',
-                      color: difficulty === d ? DIFF_COLORS[d] : '#4a7a9b',
+                      color: difficulty === d ? DIFF_COLORS[d] : '#6a9abb',
                       background: difficulty === d ? `${DIFF_COLORS[d]}18` : 'transparent',
                       boxShadow: difficulty === d ? `0 0 10px ${DIFF_COLORS[d]}40` : 'none',
                     }}

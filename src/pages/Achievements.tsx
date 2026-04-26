@@ -21,7 +21,7 @@ export default function Achievements() {
           style={{
             display: 'flex', justifyContent: 'space-between',
             fontFamily: 'Cinzel, serif', fontSize: 10, letterSpacing: 2,
-            color: '#4a7a9b', marginBottom: 6,
+            color: '#6a9abb', marginBottom: 6,
           }}
         >
           <span>Progress</span>
@@ -60,7 +60,7 @@ export default function Achievements() {
                     <div className="cinzel" style={{ fontSize: 13, fontWeight: 700, color: '#e0eeff', marginBottom: 2 }}>
                       {a.title}
                     </div>
-                    <div style={{ fontSize: 11, color: '#4a7a9b' }}>{a.description}</div>
+                    <div style={{ fontSize: 11, color: '#6a9abb' }}>{a.description}</div>
                   </div>
                   {a.unlockedAt && (
                     <div style={{ fontSize: 10, color: '#2a4a6a', fontFamily: 'Cinzel, serif', flexShrink: 0 }}>
@@ -97,7 +97,7 @@ export default function Achievements() {
                   </div>
                   <div style={{ fontSize: 11, color: '#2a4a6a' }}>{a.description}</div>
                 </div>
-                <span style={{ fontSize: 18, color: '#1e3a5a' }}>🔒</span>
+                <span style={{ fontSize: 18, color: '#3a6080' }}>🔒</span>
               </div>
             ))}
           </div>

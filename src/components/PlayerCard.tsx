@@ -9,7 +9,7 @@ function MiniBar({ value, max, color, label }: { value: number; max: number; col
   return (
     <div style={{ marginTop: 6 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, fontFamily: 'Cinzel, serif', letterSpacing: 1, marginBottom: 3 }}>
-        <span style={{ color: '#2a5a7a' }}>{label}</span>
+        <span style={{ color: '#4a8aaa' }}>{label}</span>
         <span style={{ color }}>{value.toLocaleString()} / {max.toLocaleString()}</span>
       </div>
       <div style={{ height: 6, background: 'rgba(0,0,0,0.5)', border: '1px solid rgba(30,110,181,0.2)', borderRadius: 1, overflow: 'hidden' }}>
@@ -86,13 +86,13 @@ export default function PlayerCard() {
 
           {/* Stats row */}
           <div style={{ display: 'flex', gap: 14, marginTop: 10, fontSize: 11, flexWrap: 'wrap' }}>
-            <div style={{ color: '#4a7a9b' }}>
+            <div style={{ color: '#6a9abb' }}>
               Total XP: <span style={{ color: '#4a9edd', fontWeight: 600 }}>{totalXP.toLocaleString()}</span>
             </div>
-            <div style={{ color: '#4a7a9b' }}>
+            <div style={{ color: '#6a9abb' }}>
               Quests: <span style={{ color: '#4a9edd', fontWeight: 600 }}>{totalQuestsCompleted}</span>
             </div>
-            <div style={{ color: '#4a7a9b' }}>
+            <div style={{ color: '#6a9abb' }}>
               Streak: <span style={{ color: '#fbbf24', fontWeight: 600 }}>{dailyStreak}d 🔥</span>
             </div>
           </div>

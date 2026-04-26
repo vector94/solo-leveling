@@ -74,7 +74,7 @@ export default function Dashboard() {
       <div style={{ marginBottom: 10 }}>
         <Panel title={`Active Quests (${active.length})`}>
           {active.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '24px 0', fontFamily: 'Cinzel, serif', fontSize: 12, letterSpacing: 1, color: '#1e3a5a' }}>
+            <div style={{ textAlign: 'center', padding: '24px 0', fontFamily: 'Cinzel, serif', fontSize: 12, letterSpacing: 1, color: '#3a6080' }}>
               All quests cleared for today.
             </div>
           ) : (
