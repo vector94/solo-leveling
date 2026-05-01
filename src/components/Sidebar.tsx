@@ -71,7 +71,7 @@ export default function Sidebar() {
       {/* Flavour */}
       <div style={{ padding: '8px 16px 16px', textAlign: 'center' }}>
         <span className="cinzel" style={{ fontSize: 9, letterSpacing: 3, color: '#2a5070', textTransform: 'uppercase' }}>
-          "Arise." — Sung Jin-Woo
+          "Arise, {playerName}."
         </span>
       </div>
     </aside>

@@ -8,6 +8,7 @@ import ResetNotification from './components/ResetNotification'
 import ParticleBackground from './components/ParticleBackground'
 import SystemNotification from './components/SystemNotification'
 import RankUpModal from './components/RankUpModal'
+import NameModal from './components/NameModal'
 import Dashboard from './pages/Dashboard'
 import Quests from './pages/Quests'
 import Profile from './pages/Profile'
@@ -52,7 +53,8 @@ function AppInner() {
           </Routes>
         </main>
         <BottomNav />
-        <LevelUpModal />
+        <NameModal />
+      <LevelUpModal />
         <RankUpModal />
         <AchievementToast />
         <ResetNotification />

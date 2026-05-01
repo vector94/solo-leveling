@@ -58,7 +58,7 @@ const INITIAL_STATS: Stats = { STR: 5, AGI: 5, INT: 5, SEN: 5, VIT: 5 }
 export const useGameStore = create<GameState>()(
   persist(
     (set, get) => ({
-      playerName: 'Hunter',
+      playerName: '',
       level: 1,
       currentXP: 0,
       totalXP: 0,

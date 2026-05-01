@@ -1,9 +1,11 @@
+import { useState } from 'react'
 import { getRankForLevel, xpForLevel } from '../lib/xp'
 import { useGameStore } from '../store/gameStore'
 import { RANK_COLORS } from '../components/RankBadge'
 import Panel from '../components/Panel'
 import StatPanel from '../components/StatPanel'
 import XPBar from '../components/XPBar'
+import NameModal from '../components/NameModal'
 
 const RANKS = ['E', 'D', 'C', 'B', 'A', 'S'] as const
 const RANK_MIN_LEVELS = [1, 11, 21, 31, 41, 51]
@@ -11,6 +13,7 @@ const RANK_MIN_LEVELS = [1, 11, 21, 31, 41, 51]
 export default function Profile() {
   const { playerName, level, currentXP, totalXP, totalQuestsCompleted, dailyStreak } = useGameStore()
   const rank = getRankForLevel(level)
+  const [editingName, setEditingName] = useState(false)
 
   return (
     <div className="sl-page">
@@ -47,8 +50,23 @@ export default function Profile() {
             })()}
 
             <div>
-              <div className="cinzel" style={{ fontSize: 20, fontWeight: 700, color: '#e0eeff', marginBottom: 3 }}>
-                {playerName}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
+                <span className="cinzel" style={{ fontSize: 20, fontWeight: 700, color: '#e0eeff' }}>
+                  {playerName}
+                </span>
+                <button
+                  onClick={() => setEditingName(true)}
+                  title="Change name"
+                  style={{
+                    background: 'none', border: 'none', cursor: 'pointer',
+                    color: '#2a5a7a', padding: '2px 4px', lineHeight: 1,
+                    fontSize: 13, transition: 'color 0.2s',
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.color = '#4a9edd')}
+                  onMouseLeave={e => (e.currentTarget.style.color = '#2a5a7a')}
+                >
+                  ✎
+                </button>
               </div>
               <div className="cinzel" style={{ fontSize: 12, color: '#4a9edd', letterSpacing: 1, marginBottom: 12 }}>
                 Level {level} · {rank}-Rank Hunter
@@ -93,6 +111,8 @@ export default function Profile() {
       <div style={{ marginBottom: 14 }}>
         <StatPanel />
       </div>
+
+      <NameModal open={editingName} onClose={() => setEditingName(false)} />
 
       {/* Rank progression */}
       <Panel title="Rank Progression">
