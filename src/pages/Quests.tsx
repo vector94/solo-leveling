@@ -24,7 +24,14 @@ export default function Quests() {
 
   const filtered = quests
     .filter(q => filter === 'all' || q.type === filter)
-    .sort((a, b) => STATUS_ORDER[a.status] - STATUS_ORDER[b.status])
+    .sort((a, b) => {
+      const statusDiff = STATUS_ORDER[a.status] - STATUS_ORDER[b.status]
+      if (statusDiff !== 0) return statusDiff
+      if (a.dueDate && b.dueDate) return a.dueDate.localeCompare(b.dueDate)
+      if (a.dueDate) return -1
+      if (b.dueDate) return 1
+      return 0
+    })
 
   return (
     <div className="sl-page">
