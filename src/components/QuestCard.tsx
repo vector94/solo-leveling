@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
+import { Calendar } from 'lucide-react'
 import type { Quest } from '../lib/types'
 import QuestModal from './QuestModal'
 
@@ -152,6 +153,12 @@ export default function QuestCard({ quest, index = 0 }: Props) {
           {quest.recurring && (
             <span style={{ color: '#1e6eb5', letterSpacing: 1, textTransform: 'uppercase', fontSize: 9, fontFamily: 'Cinzel, serif' }}>
               ↺ Daily
+            </span>
+          )}
+          {quest.dueDate && (
+            <span style={{ display: 'flex', alignItems: 'center', gap: 3, color: '#4a8aaa', fontSize: 9, fontFamily: 'Cinzel, serif', letterSpacing: 1 }}>
+              <Calendar size={9} color="#4a8aaa" />
+              {new Date(quest.dueDate + 'T00:00:00').toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
             </span>
           )}
         </div>

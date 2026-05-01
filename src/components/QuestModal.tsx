@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '../store/gameStore'
 import { getXPReward } from '../lib/xp'
 import type { Difficulty, QuestType, QuestCategory } from '../lib/types'
+import DatePicker from './DatePicker'
 
 interface Props {
   onClose: () => void
@@ -177,12 +178,7 @@ export default function QuestModal({ onClose, quest }: Props) {
             {!isRecurring && (
               <div style={{ marginBottom: 14 }}>
                 {label('Due Date (optional)')}
-                <input
-                  type="date"
-                  value={dueDate}
-                  onChange={e => setDueDate(e.target.value)}
-                  className="sl-input"
-                />
+                <DatePicker value={dueDate} onChange={setDueDate} />
               </div>
             )}
 

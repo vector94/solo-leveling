@@ -265,7 +265,6 @@ body::before {
 
 .sl-input:focus { border-color: rgba(74,158,221,0.7); }
 .sl-input::placeholder { color: #2a5070; }
-
 /* ── Notification ─────────────────────────── */
 .sl-notif {
   position: fixed;
